@@ -19,7 +19,7 @@ def auth_register():
             user.password = bcrypt.generate_password_hash(body_data.get('password')).decode('utf-8')
         db.session.add(user)
         db.session.commit()
-        return user_schema.dump(user),201
+        return user_schema.dump(user), 201
     except IntegrityError as err:
         if err.orig.pgcode == errorcodes.UNIQUE_VIOLATION:
             return { 'error': 'Email address already in use' }, 409
@@ -32,7 +32,7 @@ def auth_login():
     stmt = db.select(User).filter_by(email=body_data.get('email'))
     user = db.session.scalar(stmt)
     if user and bcrypt.check_password_hash(user.password, body_data.get('password')):
-        token = create_access_token(identity=str(user.id), expires_delta=timedelta(days=1))
+        token = create_access_token(identity=str(user.user_id), expires_delta=timedelta(days=1))
         return { 'email':user.email, 'token': token }
     else:
         return { 'error': 'Invalid email or password' }, 401
