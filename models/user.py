@@ -1,4 +1,5 @@
 from init import db, ma
+from marshmallow import fields
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -10,7 +11,7 @@ class User(db.Model):
     
 class UserSchema(ma.Schema):
     class Meta:
-        fields = ('user_id', 'name', 'email', 'password')
+        fields = ('user_id', 'name', 'email', 'password', 'games')
         
 user_schema = UserSchema(exclude=['password'])
 users_schema = UserSchema(many=True, exclude=['password'])
