@@ -16,4 +16,7 @@ class Game(db.Model):
     platform = db.relationship('Platform', back_populates='games')
     
 class GameSchema(ma.Schema):
-    user = fields
+    collection = fields.Nested('CollectionSchema')
+    platform = fields.Nested('PlatformSchema')
+    class Meta:
+        fields = ('game_id', 'title', 'description', 'release_date', 'multiplayer', 'edition' 'platform_id')

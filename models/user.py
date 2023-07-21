@@ -10,6 +10,7 @@ class User(db.Model):
     password = db.Column(db.String, nullable=False)
     
 class UserSchema(ma.Schema):
+    collections = fields.List(fields.Nested('CollectionSchema', exclude=['user']))
     class Meta:
         fields = ('user_id', 'name', 'email', 'password', 'games')
         
