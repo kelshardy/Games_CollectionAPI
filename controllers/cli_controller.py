@@ -1,5 +1,8 @@
 from init import db, bcrypt
 from models.user import User
+from models.collection import Collection
+from models.game import Game
+from models.review import Review
 from flask import Blueprint
 
 db_commands = Blueprint('db', __name__)
@@ -30,6 +33,28 @@ def seed_db():
     ]
     
     db.session.add_all(users)
+    
+    collections = [
+        Collection(
+            label='My Collection',
+            user=users[0]
+        )
+    ]
+    
+    db.session.add_all(collections)
+    
+    games = [
+        Game(
+            title='The Last Of Us',
+            platform='PS5',
+            genre='Survival Horror',
+            multiplayer='No',
+            release_date='02-09-2022'
+        )
+    ]
+    
+    db.session.add_all(games)
+    
     db.session.commit()
     
     print("Tables Seeded")

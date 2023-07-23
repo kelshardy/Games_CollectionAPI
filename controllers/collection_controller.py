@@ -13,10 +13,11 @@ def get_collection():
     return collections_schema.dump(collections)
 
 @collections_bp.route('/', methods=['POST'])
-@jwt_required
+@jwt_required()
 def create_collection():
     body_data = collection_schema.load(request.get_json())
     collection = Collection(
+        label=body_data.get('label'),
         user_id=body_data.get('user_id'),
         game_id=body_data.get('game_id')         
     )

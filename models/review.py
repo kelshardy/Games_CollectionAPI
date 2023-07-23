@@ -20,7 +20,7 @@ class ReviewSchema(ma.Schema):
     game = fields.Nested('GameSchema', exclude=['reviews'])
     
     class Meta:
-        fields = ('review_id', 'comment', 'time_played', 'rating', 'game', 'user')
+        fields = ('review_id', 'comment', 'time_played', 'rating', 'game')
         
 review_schema = ReviewSchema()
 reviews_schema = ReviewSchema(many=True)

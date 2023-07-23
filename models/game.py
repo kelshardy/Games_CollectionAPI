@@ -1,22 +1,24 @@
 from init import db, ma
 from marshmallow import fields
-import datetime
 
 class Game(db.Model):
     __tablename__ = 'games'
     game_id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
-    description = db.Column(db.Text)
+    platform = db.Column(db.String(50))
+    genre = db.Column(db.String(100))
+    multiplayer = db.Column(db.String(50))
     release_date = db.Column(db.Date)
-    multiplayer = db.Column(db.Boolean)
-    edition = db.Column(db.String(100))
+    edition = db.Column(db.String(100), nullable=True)
     
-    platform_id = db.Column(db.String, db.ForeignKey('platforms.id'), nullable=False)
-    
-    platform = db.relationship('Platform', back_populates='games')
-    
+    collections = db.relationship('Collection', back_populates='game', cascade='all, delete')
+    reviews = db.relationship('Review', back_populates='game', cascade='all, delete')
 class GameSchema(ma.Schema):
     collection = fields.Nested('CollectionSchema')
-    platform = fields.Nested('PlatformSchema')
+
     class Meta:
-        fields = ('game_id', 'title', 'description', 'release_date', 'multiplayer', 'edition' 'platform_id')
+        fields = ('game_id', 'title', 'platform', 'genre', 'multiplayer', 'release_date', 'edition')
+        ordered = True
+        
+game_schema = GameSchema()
+games_schema = GameSchema(many=True)
