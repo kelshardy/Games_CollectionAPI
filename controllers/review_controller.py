@@ -4,7 +4,8 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.game import Game
 from models.review import Review, review_schema, reviews_schema
 
-reviews_bp = Blueprint('reviews', __name__,  url_prefix='/reviews')
+reviews_bp = Blueprint('reviews', __name__)
+# /games/game_id/reviews
 
 @reviews_bp.route('/', methods=['POST'])
 @jwt_required()
@@ -25,7 +26,7 @@ def create_review(game_id):
         db.session.commit()
         return review_schema.dump(review), 201
     else:
-        return {'error': f'Game not found with id {game_id}'}, 404
+        return {'error': f'Game not found with id {Game.game_id}'}, 404
     
 @reviews_bp.route('/<int:review_id>', methods=['DELETE'])
 @jwt_required()

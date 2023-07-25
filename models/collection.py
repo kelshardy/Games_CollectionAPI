@@ -19,5 +19,5 @@ class CollectionSchema(ma.Schema):
     class Meta:
         fields = ('collection_id', 'label', 'user', 'game')
         
-collection_schema = CollectionSchema
+collection_schema = CollectionSchema()
 collections_schema = CollectionSchema(many=True)
