@@ -17,10 +17,11 @@ class Review(db.Model):
     
 class ReviewSchema(ma.Schema):
     user = fields.Nested('UserSchema', only=['name', 'email'])
-    game = fields.Nested('GameSchema', exclude=['reviews'])
+    game = fields.Nested('GameSchema')
     
     class Meta:
         fields = ('review_id', 'comment', 'time_played', 'rating', 'game')
+        ordered = True
         
 review_schema = ReviewSchema()
 reviews_schema = ReviewSchema(many=True)

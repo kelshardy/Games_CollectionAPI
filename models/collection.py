@@ -17,7 +17,7 @@ class CollectionSchema(ma.Schema):
     games = fields.Nested('GameSchema')
     
     class Meta:
-        fields = ('collection_id', 'label', 'user', 'game')
+        fields = ('collection_id', 'label', 'user_id', 'game_id')
         
 collection_schema = CollectionSchema()
 collections_schema = CollectionSchema(many=True)

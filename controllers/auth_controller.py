@@ -5,8 +5,10 @@ from models.user import User, user_schema, users_schema
 from sqlalchemy.exc import IntegrityError
 from psycopg2 import errorcodes
 from datetime import timedelta
+from .collection_controller import collections_bp
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
+auth_bp.register_blueprint(collections_bp, url_prefix='/<int:user_id>/collections')
 
 @auth_bp.route('/register', methods=['POST'])
 def auth_register():

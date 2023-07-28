@@ -12,9 +12,17 @@ collections_bp.register_blueprint(games_bp, url_prefix='/<int:collection_id>/gam
 @collections_bp.route('/')
 @jwt_required()
 def get_collection():
-    stmt = db.select(Collection).filter_by(collection_id=User.user_id)
+    stmt = db.select(Collection)
     collections = db.session.scalars(stmt)
     return collections_schema.dump(collections)
+
+# function to view one collection
+@collections_bp.route('/<int:id>', methods=['GET'])
+@jwt_required()
+def get_one_collection(id):
+    stmt = db.select(Collection).filter_by(collection_id=id)
+    collection = db.session.scalar(stmt)
+    return collection_schema.dump(collection)
 
 # function to create a collection
 @collections_bp.route('/', methods=['POST'])
@@ -51,9 +59,9 @@ def delete_collection(id):
     if collection:
         db.session.delete(collection)
         db.session.commit()
-        return {'message': f'Collection "{collection.label}" deleted'}
+        return {'message': f'Collection {collection.label}- deleted'}
     else:
-        return {'error': f'No collection if "{collection.label}" found'}, 404
+        return {'error': f'No collection if -{collection.label}- found'}, 404
     
 # function to update/change the collection's header
 @collections_bp.route('/<int:id>', methods=['PUT', 'PATCH'])

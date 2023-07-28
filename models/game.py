@@ -18,7 +18,6 @@ class GameSchema(ma.Schema):
 
     class Meta:
         fields = ('game_id', 'title', 'platform', 'genre', 'multiplayer', 'release_date', 'edition')
-        ordered = True
         
 game_schema = GameSchema()
 games_schema = GameSchema(many=True)
