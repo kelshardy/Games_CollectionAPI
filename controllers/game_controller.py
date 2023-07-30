@@ -19,7 +19,8 @@ def list_games(collection_id):
         stmt = db.select(Game).order_by(Game.title.desc())
         games = db.session.scalars(stmt)
         return games_schema.dump(games)
-    
+
+# function to show an individual game within a collection
 @games_bp.route('/<int:game_id>', methods=['GET'])
 @jwt_required()
 def get_one_game(collection_id, game_id):
@@ -50,6 +51,7 @@ def add_game(collection_id):
     db.session.commit()
     return game_schema.dump(game), 201
 
+# This route and method will delete a game from a collection
 @games_bp.route('/<int:game_id>', methods=['DELETE'])
 def delete_game(collection_id, game_id):
     stmt = db.select(Collection).filter_by(collection_id=collection_id)
@@ -63,7 +65,8 @@ def delete_game(collection_id, game_id):
             return {'message': f'Game -{game.title}- has been successfully deleted'}
         else:
             return {'error': f'Game -{game.title}- could not be found'}, 404
-        
+
+# To update the information in the Game model, change records within the table.
 @games_bp.route('/<int:game_id>', methods=['PUT', 'PATCH'])
 def update_game(collection_id, game_id):
     stmt = db.select(Collection).filter_by(collection_id=collection_id)

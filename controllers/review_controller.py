@@ -6,8 +6,8 @@ from models.collection import Collection
 from models.review import Review, review_schema, reviews_schema
 
 reviews_bp = Blueprint('reviews', __name__)
-# /games/game_id/reviews
 
+# Function to shows the reviews on a certain game with this route and method
 @reviews_bp.route('/', methods=['GET'])
 @jwt_required()
 def get_reviews(collection_id, game_id):
@@ -21,6 +21,7 @@ def get_reviews(collection_id, game_id):
             reviews = db.session.scalars(stmt)
             return reviews_schema.dump(reviews), 201
 
+# Allows the user to create a review on a particular game 
 @reviews_bp.route('/', methods=['POST'])
 @jwt_required()
 def create_review(collection_id, game_id):
@@ -41,7 +42,8 @@ def create_review(collection_id, game_id):
         return review_schema.dump(review), 201
     else:
         return {'error': f'Game not found with id {Game.game_id}'}, 404
-    
+  
+# Gives the User the ability to remove a review from a game  
 @reviews_bp.route('/<int:review_id>', methods=['DELETE'])
 @jwt_required()
 def delete_review(collection_id, game_id, review_id):
@@ -60,6 +62,7 @@ def delete_review(collection_id, game_id, review_id):
             else:
                 return {'error': f'Review not found for ID {review_id}'}, 404
 
+# The User can update/change information within an existing review
 @reviews_bp.route('/<int:review_id>', methods=['PUT', 'PATCH'])
 def update_review(collection_id, game_id, review_id):
     stmt = db.select(Collection).filter_by(collection_id=collection_id)

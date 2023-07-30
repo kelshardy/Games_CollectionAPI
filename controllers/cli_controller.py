@@ -7,16 +7,19 @@ from flask import Blueprint
 
 db_commands = Blueprint('db', __name__)
 
+# For creating tables for the database
 @db_commands.cli.command('create')
 def create_db():
     db.create_all()
     print("Tables Created")
     
+# For deleting the tables within database
 @db_commands.cli.command('drop')
 def drop_db():
     db.drop_all()
     print("Tables Dropped")
-    
+ 
+ # Seeds information within the database  
 @db_commands.cli.command('seed')
 def seed_db():
     users = [

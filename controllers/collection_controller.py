@@ -37,19 +37,6 @@ def create_collection():
     db.session.commit()
     return collection_schema.dump(collection), 201
 
-# function to delete all collections
-@collections_bp.route('/', methods=['DELETE'])
-@jwt_required()
-def delete_collections():
-    stmt = db.select(Collection)
-    collections = db.session.scalars(stmt)
-    if collections:
-        db.session.delete(collections)
-        db.session.commit()
-        return {'message': f'All collections deleted successfully'}
-    else:
-        return {'error': f'No collections found'}, 404
-
 # function to delete an individual collection    
 @collections_bp.route('/<int:id>', methods=['DELETE'])
 @jwt_required()
